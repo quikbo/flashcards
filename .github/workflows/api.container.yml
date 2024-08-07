@@ -3,7 +3,7 @@ name: Build and push the API container image
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'api/**'
       - '.github/workflows/api.container.yml'
