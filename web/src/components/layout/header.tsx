@@ -5,9 +5,7 @@ import {
   $decks,
   $pageLimit,
   $totalCardCount,
-  $totalCardPages,
   $totalDeckCount,
-  $totalDeckPages,
 } from "@/lib/store";
 import { useStore } from "@nanostores/react";
 
@@ -20,13 +18,11 @@ const Header = () => {
   const cards = useStore($cards);
   const decks = useStore($decks);
   let totalItems = 0;
-  let totalPages = 0;
+
   if (page.route === "home") {
     totalItems = useStore($totalDeckCount);
-    totalPages = useStore($totalDeckPages);
   } else {
     totalItems = useStore($totalCardCount);
-    totalPages = useStore($totalCardPages);
   }
 
   const displayHomePagination = () => {
