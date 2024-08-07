@@ -18,13 +18,15 @@ const UserMenu = () => {
     return (
       <div className="space-y-2 m-3">
         <div>{`Welcome ${user.name}!`}</div>
-        <Button variant={"secondary"} onClick=
-          {async () => {
-          await validate();
-          if (sessionValid) {
-            logout();
-          }
-          }}>
+        <Button
+          variant={"secondary"}
+          onClick={async () => {
+            await validate();
+            if (sessionValid) {
+              logout();
+            }
+          }}
+        >
           Sign out
         </Button>
       </div>

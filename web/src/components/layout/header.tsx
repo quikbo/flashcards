@@ -27,7 +27,7 @@ const Header = () => {
 
   const displayHomePagination = () => {
     if (totalItems === 0) {
-      return <>0 decks</>
+      return <>0 decks</>;
     }
     return (
       <div>
@@ -39,7 +39,7 @@ const Header = () => {
 
   const displayDeckPagination = () => {
     if (totalItems === 0) {
-      return <>0 cards</>
+      return <>0 cards</>;
     }
     return (
       <div className="text-red-600">

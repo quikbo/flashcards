@@ -6,12 +6,11 @@ import { $router } from "@/lib/router";
 import { getPagePath, redirectPage } from "@nanostores/router";
 
 const Login = () => {
-  const { user, login } = useAuth(); 
+  const { user, login } = useAuth();
 
   if (user && user.username) {
-      redirectPage($router, "home");
+    redirectPage($router, "home");
   }
-
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,10 +27,12 @@ const Login = () => {
       <div className="text-3xl font-bold text-center">
         Sign into your account
       </div>
-      <p className="text-center">Or{" "}  
-        <a href={getPagePath($router, "register")}
-          className="hover:underline">
-         create a new account</a> </p>
+      <p className="text-center">
+        Or{" "}
+        <a href={getPagePath($router, "register")} className="hover:underline">
+          create a new account
+        </a>{" "}
+      </p>
       <form className="flex flex-col gap-3" onSubmit={handleFormSubmit}>
         <Label htmlFor="username">Username</Label>
         <Input

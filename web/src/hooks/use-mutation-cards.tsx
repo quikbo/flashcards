@@ -1,4 +1,10 @@
-import { addCard, decrementCardCount, incrementCardCount, removeCard, updateCardContent } from "@/lib/store";
+import {
+  addCard,
+  decrementCardCount,
+  incrementCardCount,
+  removeCard,
+  updateCardContent,
+} from "@/lib/store";
 import { createCard, deleteCard, updateCard } from "@/data/api";
 import { useToast } from "@/components/ui/use-toast";
 import useAuth from "./use-auth";
@@ -59,8 +65,8 @@ const useMutationCards = (deckId: string) => {
           id: user.id,
           name: user.name,
           username: user.username,
-        }
-      }
+        },
+      };
       addCard(cardWithAuthor);
       incrementCardCount();
     } catch (error) {

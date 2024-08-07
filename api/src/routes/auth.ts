@@ -49,7 +49,7 @@ authRoutes.post("/sign-in", zValidator("json", signInSchema), async (c) => {
   c.header("Set-Cookie", sessionCookie.serialize(), {
     append: true,
   });
-  
+
   return c.json({
     message: "You have been signed in!",
     user: {
@@ -60,60 +60,66 @@ authRoutes.post("/sign-in", zValidator("json", signInSchema), async (c) => {
   });
 });
 
-authRoutes.post("/sign-up", zValidator("json", signUpSchema, (result, c) => {
-  if (!result.success) {
-    return zCustomErrorMessage(result, c);
-  }
-}), async (c) => {
-  const { name, username, password } = c.req.valid("json");
-  //checking is username already in use
-  const sameUserNameUsers = await db.query.users.findMany({
-    where: eq(users.username, username)
-  });
+authRoutes.post(
+  "/sign-up",
+  zValidator("json", signUpSchema, (result, c) => {
+    if (!result.success) {
+      return zCustomErrorMessage(result, c);
+    }
+  }),
+  async (c) => {
+    const { name, username, password } = c.req.valid("json");
+    //checking is username already in use
+    const sameUserNameUsers = await db.query.users.findMany({
+      where: eq(users.username, username),
+    });
 
-  if (sameUserNameUsers.length !== 0) {
-    throw new HTTPException(401, { message: "Username already in use, please try a different one" });
-  }
+    if (sameUserNameUsers.length !== 0) {
+      throw new HTTPException(401, {
+        message: "Username already in use, please try a different one",
+      });
+    }
 
-  const passwordHash = await hash(password, hashOptions);
+    const passwordHash = await hash(password, hashOptions);
 
-  const newUser = await db
-    .insert(users)
-    .values({
-      username,
-      name,
-      password_hash: passwordHash,
-    })
-    .returning()
-    .get();
+    const newUser = await db
+      .insert(users)
+      .values({
+        username,
+        name,
+        password_hash: passwordHash,
+      })
+      .returning()
+      .get();
 
-  const session = await lucia.createSession(newUser.id, {});
-  const sessionCookie = lucia.createSessionCookie(session.id);
-  //console.log(sessionCookie)
-  c.header("Set-Cookie", sessionCookie.serialize(), {
-    append: true,
-  });
+    const session = await lucia.createSession(newUser.id, {});
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    //console.log(sessionCookie)
+    c.header("Set-Cookie", sessionCookie.serialize(), {
+      append: true,
+    });
 
-  return c.json(
-    {
-      success: true,
-      message: "You have been signed up!",
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        username: newUser.username,
+    return c.json(
+      {
+        success: true,
+        message: "You have been signed up!",
+        user: {
+          id: newUser.id,
+          name: newUser.name,
+          username: newUser.username,
+        },
       },
-    },
-    201,
-  );
-});
+      201,
+    );
+  },
+);
 
 authRoutes.post("/sign-out", async (c) => {
   const cookie = c.req.header("Cookie") ?? "";
   const sessionId = lucia.readSessionCookie(cookie);
-  console.log(cookie, sessionId)
+  console.log(cookie, sessionId);
   if (!sessionId) {
-    throw new HTTPException(401, { message: "No session found"})
+    throw new HTTPException(401, { message: "No session found" });
   }
   await lucia.invalidateSession(sessionId);
   const sessionCookie = lucia.createBlankSessionCookie();
@@ -123,7 +129,6 @@ authRoutes.post("/sign-out", async (c) => {
   });
   return c.json({ success: true, message: "You have been signed out!" });
 });
-
 
 authRoutes.post("/validate-session", async (c) => {
   const cookie = c.req.header("Cookie") ?? "";

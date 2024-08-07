@@ -5,7 +5,6 @@ import { $user, clearUser, setSessionValid, setUser } from "@/lib/store";
 import { useStore } from "@nanostores/react";
 import { redirectPage } from "@nanostores/router";
 
-
 function useAuth() {
   const user = useStore($user);
 
@@ -19,7 +18,7 @@ function useAuth() {
         variant: "destructive",
         title: "Sorry! There was an error signing in!",
         description: errorMessage,
-      })
+      });
     }
   };
 
@@ -33,7 +32,7 @@ function useAuth() {
         variant: "destructive",
         title: "Sorry! There was an error registering!",
         description: errorMessage,
-      })
+      });
     }
   };
 
@@ -47,7 +46,7 @@ function useAuth() {
         variant: "destructive",
         title: "Sorry! There was an error signing out!",
         description: errorMessage,
-      })
+      });
     }
   };
 
@@ -66,12 +65,11 @@ function useAuth() {
         variant: "destructive",
         title: "Sorry! There was an error validating session!",
         description: errorMessage,
-      })
+      });
     }
-  }
+  };
 
-  return { user, login, register, logout, validate }
+  return { user, login, register, logout, validate };
 }
-
 
 export default useAuth;

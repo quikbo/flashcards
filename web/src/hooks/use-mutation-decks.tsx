@@ -1,4 +1,9 @@
-import { addDeck, decrementDeckCount, removeDeck, updateDeckTitle } from "@/lib/store";
+import {
+  addDeck,
+  decrementDeckCount,
+  removeDeck,
+  updateDeckTitle,
+} from "@/lib/store";
 import { createDeck, deleteDeck, updateDeck } from "@/data/api";
 import { useToast } from "@/components/ui/use-toast";
 import useAuth from "./use-auth";
@@ -54,8 +59,8 @@ const useMutationDecks = () => {
           id: user.id,
           name: user.name,
           username: user.username,
-        }
-      }
+        },
+      };
       addDeck(deckWithAuthor);
     } catch (error) {
       toast({

@@ -96,7 +96,9 @@ cardsRouter.get(
     }
     const user = c.get("user");
     if (deck.userId !== user!.id) {
-      throw new HTTPException(403, { message: "Unauthorized to fetch cards in this deck", });
+      throw new HTTPException(403, {
+        message: "Unauthorized to fetch cards in this deck",
+      });
     }
 
     const [cardsData, [{ totalCount }]] = await Promise.all([
@@ -150,7 +152,9 @@ cardsRouter.get(
     }
     const user = c.get("user");
     if (deck.userId !== user!.id) {
-      throw new HTTPException(403, { message: "Unauthorized to fetch cards in this deck", });
+      throw new HTTPException(403, {
+        message: "Unauthorized to fetch cards in this deck",
+      });
     }
 
     const card = await db
@@ -182,9 +186,13 @@ cardsRouter.delete(
     const { deck_id, id } = c.req.valid("param");
     const user = c.get("user");
 
-    const card = await db.select().from(cards).where(and(eq(cards.id, Number(id)), eq(cards.deckId, Number(deck_id)))).get();
+    const card = await db
+      .select()
+      .from(cards)
+      .where(and(eq(cards.id, Number(id)), eq(cards.deckId, Number(deck_id))))
+      .get();
     if (!card) {
-      throw new HTTPException(404, { message: "Card not found", });
+      throw new HTTPException(404, { message: "Card not found" });
     }
     //ensuring fdeck exists and same user
     const deck = await db
@@ -196,7 +204,9 @@ cardsRouter.delete(
       throw new HTTPException(404, { message: "Deck not found" });
     }
     if (deck.userId !== user!.id) {
-      throw new HTTPException(403, { message: "Unauthorized to delete cards in this deck", });
+      throw new HTTPException(403, {
+        message: "Unauthorized to delete cards in this deck",
+      });
     }
 
     const deletedCard = await db
@@ -241,7 +251,9 @@ cardsRouter.post(
       throw new HTTPException(404, { message: "Deck not found" });
     }
     if (deck.userId !== user!.id) {
-      throw new HTTPException(403, { message: "Unauthorized to add cards to this deck", });
+      throw new HTTPException(403, {
+        message: "Unauthorized to add cards to this deck",
+      });
     }
 
     const { front, back } = await c.req.valid("json");
@@ -293,9 +305,13 @@ cardsRouter.patch(
     const { deck_id, id } = c.req.valid("param");
 
     const user = c.get("user");
-    const card = await db.select().from(cards).where(and(eq(cards.id, Number(id)), eq(cards.deckId, Number(deck_id)))).get();
+    const card = await db
+      .select()
+      .from(cards)
+      .where(and(eq(cards.id, Number(id)), eq(cards.deckId, Number(deck_id))))
+      .get();
     if (!card) {
-      throw new HTTPException(404, { message: "Card not found", });
+      throw new HTTPException(404, { message: "Card not found" });
     }
     const deck = await db
       .select()
@@ -306,7 +322,9 @@ cardsRouter.patch(
       throw new HTTPException(404, { message: "Deck not found" });
     }
     if (deck.userId !== user!.id) {
-      throw new HTTPException(403, { message: "Unauthorized to edit cards in this deck", });
+      throw new HTTPException(403, {
+        message: "Unauthorized to edit cards in this deck",
+      });
     }
 
     const updatedCard = await db

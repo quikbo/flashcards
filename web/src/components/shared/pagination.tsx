@@ -199,7 +199,9 @@ const Paginator = ({ children, loadPage }: PaginatorProps) => {
           <PaginationItem>
             <PaginationNext
               href="#"
-              className={curPage === totalPages ? "pointer-events-none opacity-50" : ""}
+              className={
+                curPage === totalPages ? "pointer-events-none opacity-50" : ""
+              }
               onClick={() => {
                 if (curPage !== totalPages) {
                   handleClick(curPage + 1);

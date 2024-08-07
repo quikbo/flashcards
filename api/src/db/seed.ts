@@ -40,11 +40,15 @@ async function seed() {
 
   const sampleUsers = [];
   for (let i = 0; i <= 10; i++) {
-    const user = await db.insert(users).values({
-      name: faker.person.fullName(),
-      username: `user-${i}`,
-      password_hash: await hash(`pass-${i}`, hashOptions),
-    }).returning().get();
+    const user = await db
+      .insert(users)
+      .values({
+        name: faker.person.fullName(),
+        username: `user-${i}`,
+        password_hash: await hash(`pass-${i}`, hashOptions),
+      })
+      .returning()
+      .get();
 
     sampleUsers.push(user);
   }

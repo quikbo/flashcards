@@ -6,12 +6,11 @@ import { $router } from "@/lib/router";
 import { getPagePath, redirectPage } from "@nanostores/router";
 
 const Register = () => {
-  const { user, register } = useAuth(); 
+  const { user, register } = useAuth();
 
   if (user && user.username) {
     redirectPage($router, "home");
-}
-
+  }
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -29,20 +28,22 @@ const Register = () => {
       <div className="text-3xl font-bold text-center">
         Register a new account
       </div>
-      <p className="text-center">Or{" "}  
-        <a href={getPagePath($router, "login")}
-          className="hover:underline">
-         sign into an existing account</a> </p>
+      <p className="text-center">
+        Or{" "}
+        <a href={getPagePath($router, "login")} className="hover:underline">
+          sign into an existing account
+        </a>{" "}
+      </p>
       <form className="flex flex-col gap-3" onSubmit={handleFormSubmit}>
         <Label htmlFor="name">Name</Label>
-          <Input
-            id="name"
-            name="name"
-            placeholder="Enter name..."
-            required
-            type="text"
-            autoComplete="name"
-          />
+        <Input
+          id="name"
+          name="name"
+          placeholder="Enter name..."
+          required
+          type="text"
+          autoComplete="name"
+        />
         <Label htmlFor="username">Username</Label>
         <Input
           id="username"

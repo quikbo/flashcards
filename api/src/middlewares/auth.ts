@@ -1,7 +1,6 @@
 import type { Context, Next } from "hono";
 import { lucia } from "../db/auth";
 
-
 export const auth = async (c: Context, next: Next) => {
   const cookie = c.req.header("Cookie") ?? "";
   const sessionId = lucia.readSessionCookie(cookie);

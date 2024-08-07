@@ -23,24 +23,32 @@ const DeckActions = ({ deck }: DeckActionsProps) => {
     <div className="flex">
       <Dialog>
         <DropdownMenu>
-          <DropdownMenuTrigger 
+          <DropdownMenuTrigger
             className="flex justify-center items-center h-9 w-9 hover:bg-accent hover:text-accent-foreground"
-            onClick={async () => {await validate()}}
-            >
+            onClick={async () => {
+              await validate();
+            }}
+          >
             <DotsVerticalIcon />
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DialogTrigger asChild onClick={async () => {
-              await validate();
-              setDialogType("Edit")
-            }}>
+            <DialogTrigger
+              asChild
+              onClick={async () => {
+                await validate();
+                setDialogType("Edit");
+              }}
+            >
               <DropdownMenuItem>Edit Deck</DropdownMenuItem>
             </DialogTrigger>
 
-            <DialogTrigger asChild onClick={async () => {
-              await validate();
-              setDialogType("Delete")
-            }}>
+            <DialogTrigger
+              asChild
+              onClick={async () => {
+                await validate();
+                setDialogType("Delete");
+              }}
+            >
               <DropdownMenuItem className="text-red-600">
                 Delete Deck
               </DropdownMenuItem>

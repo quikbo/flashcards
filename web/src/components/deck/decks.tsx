@@ -12,7 +12,7 @@ const Decks = () => {
 
   useEffect(() => {
     loadDecks(curPage);
-  },[totalDeckCount])
+  }, [totalDeckCount]);
 
   const loadDecksPage = (pageIndex: number) => {
     loadDecks(pageIndex);

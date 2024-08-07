@@ -16,74 +16,73 @@ import { Context } from "../lib/context";
 
 const decksRouter = new Hono<Context>();
 const standardResponse =
-//GET route for retrieving all decks
-decksRouter.get(
-  "/decks",
-  authGuard,
-  zValidator("query", queryParamsSchema, (result, c) => {
-    if (!result.success) {
-      return zCustomErrorMessage(result, c);
-    }
-  }),
-  async (c) => {
-    const { sort, search, page = 1, limit = 10 } = c.req.valid("query");
+  //GET route for retrieving all decks
+  decksRouter.get(
+    "/decks",
+    authGuard,
+    zValidator("query", queryParamsSchema, (result, c) => {
+      if (!result.success) {
+        return zCustomErrorMessage(result, c);
+      }
+    }),
+    async (c) => {
+      const { sort, search, page = 1, limit = 10 } = c.req.valid("query");
 
-    const whereClause: (SQL | undefined)[] = [];
-    if (search) {
-      whereClause.push(like(decks.title, `%${search}%`));
-    }
+      const whereClause: (SQL | undefined)[] = [];
+      if (search) {
+        whereClause.push(like(decks.title, `%${search}%`));
+      }
 
-    const user = c.get("user");
-    whereClause.push(eq(decks.userId, user!.id));
-  
+      const user = c.get("user");
+      whereClause.push(eq(decks.userId, user!.id));
 
-    const orderByClause: SQL[] = [];
-    if (sort === "desc") {
-      orderByClause.push(desc(decks.date));
-    } else if (sort === "asc") {
-      orderByClause.push(asc(decks.date));
-    }
+      const orderByClause: SQL[] = [];
+      if (sort === "desc") {
+        orderByClause.push(desc(decks.date));
+      } else if (sort === "asc") {
+        orderByClause.push(asc(decks.date));
+      }
 
-    const offset = (page - 1) * limit;
+      const offset = (page - 1) * limit;
 
-    const [decksData, [{ totalCount }]] = await Promise.all([
-      db
-        .select({
-          id: decks.id,
-          title: decks.title,
-          date: decks.date,
-          numberOfCards: decks.numberOfCards,
-          author: {
-            id: users.id,
-            name: users.name,
-            username: users.username,
-          }
-        })
-        .from(decks)
-        .leftJoin(users, eq(decks.userId, users.id))
-        .where(and(...whereClause))
-        .orderBy(...orderByClause)
-        .limit(limit)
-        .offset(offset),
-      db
-        .select({ totalCount: count() })
-        .from(decks)
-        .where(and(...whereClause)),
-    ]);
+      const [decksData, [{ totalCount }]] = await Promise.all([
+        db
+          .select({
+            id: decks.id,
+            title: decks.title,
+            date: decks.date,
+            numberOfCards: decks.numberOfCards,
+            author: {
+              id: users.id,
+              name: users.name,
+              username: users.username,
+            },
+          })
+          .from(decks)
+          .leftJoin(users, eq(decks.userId, users.id))
+          .where(and(...whereClause))
+          .orderBy(...orderByClause)
+          .limit(limit)
+          .offset(offset),
+        db
+          .select({ totalCount: count() })
+          .from(decks)
+          .where(and(...whereClause)),
+      ]);
 
-    return c.json({
-      success: true,
-      message: "Decks retrieved successfully",
-      data: decksData,
-      meta: {
-        page,
-        limit,
-        totalPages: Math.ceil(totalCount / limit),
-        totalCount: totalCount,
-      },
-    });
-  },
-);
+      return c.json({
+        success: true,
+        message: "Decks retrieved successfully",
+        data: decksData,
+        meta: {
+          page,
+          limit,
+          totalPages: Math.ceil(totalCount / limit),
+          totalCount: totalCount,
+        },
+      });
+    },
+  );
 
 //GET route for retrieving a specific deck by id
 decksRouter.get(
@@ -106,18 +105,21 @@ decksRouter.get(
           id: users.id,
           name: users.name,
           username: users.username,
-        }
+        },
       })
       .from(decks)
       .leftJoin(users, eq(decks.userId, users.id))
-      .where(eq(decks.id, id)).get();
+      .where(eq(decks.id, id))
+      .get();
 
     if (!deck) {
       throw new HTTPException(404, { message: "Deck not found" });
     }
     const user = c.get("user");
     if (deck.author!.id !== user!.id) {
-      throw new HTTPException(403, { message: "Unauthorized to fetch this deck", });
+      throw new HTTPException(403, {
+        message: "Unauthorized to fetch this deck",
+      });
     }
 
     return c.json({
@@ -143,10 +145,12 @@ decksRouter.delete(
 
     const deck = await db.select().from(decks).where(eq(decks.id, id)).get();
     if (!deck) {
-      throw new HTTPException(404, { message: "Deck not found", });
+      throw new HTTPException(404, { message: "Deck not found" });
     }
     if (deck.userId !== user!.id) {
-      throw new HTTPException(403, { message: "Unauthorized to delete this deck", });
+      throw new HTTPException(403, {
+        message: "Unauthorized to delete this deck",
+      });
     }
 
     //delete child cards before deleting deck
@@ -220,10 +224,12 @@ decksRouter.patch(
 
     const deck = await db.select().from(decks).where(eq(decks.id, id)).get();
     if (!deck) {
-      throw new HTTPException(404, { message: "Deck not found", });
+      throw new HTTPException(404, { message: "Deck not found" });
     }
     if (deck.userId !== user!.id) {
-      throw new HTTPException(403, { message: "Unauthorized to update this deck", });
+      throw new HTTPException(403, {
+        message: "Unauthorized to update this deck",
+      });
     }
 
     const updatedDeck = await db
@@ -232,7 +238,7 @@ decksRouter.patch(
       .where(eq(decks.id, id))
       .returning()
       .get();
-  
+
     return c.json({
       success: true,
       message: "Deck updated successfully",

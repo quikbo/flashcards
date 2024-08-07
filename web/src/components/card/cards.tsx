@@ -12,8 +12,10 @@ const Cards = ({ deckId }: { deckId: string }) => {
   if (cards.length === 0) {
     return (
       <div className="flex items-center justify-center min-h-dvh">
-        <p>This deck has no cards to display.
-        Create one with the red plus button.</p>
+        <p>
+          This deck has no cards to display. Create one with the red plus
+          button.
+        </p>
       </div>
     );
   } else {

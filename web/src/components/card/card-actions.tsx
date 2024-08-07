@@ -21,9 +21,13 @@ const CardActions = ({ card }: CardActionsProps) => {
 
   return (
     <div className="flex">
-        <Dialog>
+      <Dialog>
         <DropdownMenu>
-          <DropdownMenuTrigger onClick={async () => {await validate()}}>
+          <DropdownMenuTrigger
+            onClick={async () => {
+              await validate();
+            }}
+          >
             <DotsVerticalIcon />
           </DropdownMenuTrigger>
           <DropdownMenuContent>

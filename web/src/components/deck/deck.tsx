@@ -25,7 +25,8 @@ const Deck = ({ deck }: DeckProps) => {
     <div className="flex-none p-12 border-b">
       <div
         className="mx-auto rounded shadow-xl p-5 
-        border-b-8 border-r-8 border-gray-110  border-double">
+        border-b-8 border-r-8 border-gray-110  border-double"
+      >
         <div className="flex justify-between p1-4">
           <div className="py-4 cursor-pointer" onClick={navigateToCardsView}>
             <div className="text-xl font-bold">{deck.title}</div>

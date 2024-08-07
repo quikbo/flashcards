@@ -5,7 +5,6 @@ import { logger } from "@nanostores/logger";
 
 const DEBUG = false;
 
-
 //LAYOUT STATE MANAGEMENT
 export const $sessionValid = atom<boolean>(false);
 export function setSessionValid(bool: boolean) {
@@ -37,7 +36,6 @@ export function decrementDeckCount() {
 export function incrementDeckCount() {
   $totalDeckCount.set($totalDeckCount.get() + 1);
 }
-
 
 export const $totalCardPages = atom<number>(1);
 export function setTotalCardPages(pages: number) {
@@ -120,8 +118,8 @@ export function updateCardContent(id: string, front: string, back: string) {
 const defaultUser: UserType = {
   id: "",
   name: "",
-  username: ""
-}
+  username: "",
+};
 export const $user = persistentMap("user:", defaultUser);
 
 export function setUser(user: UserType) {
@@ -131,6 +129,5 @@ export function setUser(user: UserType) {
 export function clearUser() {
   $user.set(defaultUser);
 }
-
 
 DEBUG && logger({ $decks, $currentPage, $cards });

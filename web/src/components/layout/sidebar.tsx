@@ -12,7 +12,6 @@ import { useStore } from "@nanostores/react";
 import AddCardDialog from "../card/add-card-dialog";
 import useAuth from "@/hooks/use-auth";
 
-
 const Sidebar = () => {
   const page = useStore($router);
   const { validate } = useAuth();
@@ -52,8 +51,7 @@ const Sidebar = () => {
       <Button aria-label={"Search"} variant="ghost" size="icon">
         <MagnifyingGlassIcon className="w-5 h-5" />
       </Button>
-      {page.route === "home" &&
-       (
+      {page.route === "home" && (
         <Dialog>
           <DialogTrigger asChild onClick={async () => await validate()}>
             <Button aria-label={"Make a Deck"} variant="default" size="icon">

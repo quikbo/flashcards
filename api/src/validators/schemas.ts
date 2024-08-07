@@ -6,7 +6,10 @@ export const createDeckSchema = z.object({
     .string()
     .min(1, "Title is required")
     .max(100, "Title must be 100 characters or less")
-    .regex(/^[a-z A-Z 0-9 ]+$/, "Title must only include alphanumeric characters"),
+    .regex(
+      /^[a-z A-Z 0-9 ]+$/,
+      "Title must only include alphanumeric characters",
+    ),
 });
 
 export const updateDeckSchema = createDeckSchema.partial();

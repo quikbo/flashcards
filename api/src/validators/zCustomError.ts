@@ -10,7 +10,7 @@ type Z = {
     | { deck_id: number }
     | { title?: string }
     | { sort?: "asc" | "desc"; search?: string; page?: number; limit?: number }
-    | { username: string; password: string; name: string; };
+    | { username: string; password: string; name: string };
 };
 
 export const zCustomErrorMessage = (zError: Z, c: Context) => {

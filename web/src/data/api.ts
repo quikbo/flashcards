@@ -6,16 +6,19 @@ import { DeckType, CardType, UserType } from "./types";
 export const fetchDecks = async (
   page: number = 1,
   limit: number = 10,
-  sort: string = "desc"
+  sort: string = "desc",
 ): Promise<{
   data: DeckType[];
   totalDecks: number;
   totalPages: number;
   limit: number;
 }> => {
-  const response = await fetch(`${API_URL}/decks?page=${page}&limit=${limit}&sort=${sort}`, {
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${API_URL}/decks?page=${page}&limit=${limit}&sort=${sort}`,
+    {
+      credentials: "include",
+    },
+  );
   if (!response.ok) {
     throw new Error(
       `Read Deck API request failed with code: ${response.status}`,
@@ -35,9 +38,7 @@ export const deleteDeck = async (id: string): Promise<DeckType> => {
   });
   const responseJSON = await response.json();
   if (!responseJSON.success) {
-    throw new Error(
-      `${responseJSON.message}`,
-    );
+    throw new Error(`${responseJSON.message}`);
   }
   return responseJSON.data;
 };
@@ -59,9 +60,7 @@ export const createDeck = async (
   });
   const responseJSON = await response.json();
   if (!responseJSON.success) {
-    throw new Error(
-      `${responseJSON.message}`,
-    );
+    throw new Error(`${responseJSON.message}`);
   }
   return responseJSON.data;
 };
@@ -82,14 +81,10 @@ export const updateDeck = async (
   });
   const responseJSON = await response.json();
   if (!responseJSON.success) {
-    throw new Error(
-      `${responseJSON.message}`,
-    );
+    throw new Error(`${responseJSON.message}`);
   }
   return responseJSON.data;
 };
-
-
 
 //CARDS API
 
@@ -108,13 +103,11 @@ export const fetchCards = async (
     `${API_URL}/decks/${deckId}/cards?page=${page}&limit=${limit}`,
     {
       credentials: "include",
-    }
+    },
   );
   const responseJSON = await response.json();
   if (!responseJSON.success) {
-    throw new Error(
-      `${responseJSON.message}`,
-    );
+    throw new Error(`${responseJSON.message}`);
   }
   const data = responseJSON.data;
   const totalCards = responseJSON.meta.totalCount;
@@ -133,9 +126,7 @@ export const deleteCard = async (
   });
   const responseJSON = await response.json();
   if (!responseJSON.success) {
-    throw new Error(
-      `${responseJSON.message}`,
-    );
+    throw new Error(`${responseJSON.message}`);
   }
   return responseJSON.data;
 };
@@ -158,9 +149,7 @@ export const createCard = async (
   });
   const responseJSON = await response.json();
   if (!responseJSON.success) {
-    throw new Error(
-      `${responseJSON.message}`,
-    );
+    throw new Error(`${responseJSON.message}`);
   }
   return responseJSON.data;
 };
@@ -184,71 +173,64 @@ export const updateCard = async (
   });
   const responseJSON = await response.json();
   if (!responseJSON.success) {
-    throw new Error(
-      `${responseJSON.message}`,
-    );
+    throw new Error(`${responseJSON.message}`);
   }
   return responseJSON.data;
 };
-
-
 
 //AUTH API
 
 export const signUp = async (
   name: string,
   username: string,
-  password: string
+  password: string,
 ): Promise<UserType> => {
-const response = await fetch(`${API_URL}/sign-up`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    name,
-    username,
-    password,
-  }),
-  credentials: "include",
-});
-const responseJSON = await response.json();
-if (!responseJSON.success) {
-  throw new Error(
-    `${responseJSON.message}`,
-  );
-}
-return responseJSON.user;
+  const response = await fetch(`${API_URL}/sign-up`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name,
+      username,
+      password,
+    }),
+    credentials: "include",
+  });
+  const responseJSON = await response.json();
+  if (!responseJSON.success) {
+    throw new Error(`${responseJSON.message}`);
+  }
+  return responseJSON.user;
 };
-
 
 export const signIn = async (
   username: string,
-  password: string
+  password: string,
 ): Promise<UserType> => {
-const response = await fetch(`${API_URL}/sign-in`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    username,
-    password,
-  }),
-  credentials: "include",
-});
-if (!response.ok) {
-  throw new Error(`API request failed! with status: ${response.status}`);
-}
-const { user } : { user : UserType } = await response.json();
-return user;
+  const response = await fetch(`${API_URL}/sign-in`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username,
+      password,
+    }),
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error(`API request failed! with status: ${response.status}`);
+  }
+  const { user }: { user: UserType } = await response.json();
+  return user;
 };
 
 export const signOut = async (): Promise<boolean> => {
-const response = await fetch(`${API_URL}/sign-out`, {
-  method: "POST",
-  credentials: "include",
-});
-if (!response.ok) {
-  throw new Error(`API request failed! with status: ${response.status}`);
-}
-return true;
+  const response = await fetch(`${API_URL}/sign-out`, {
+    method: "POST",
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error(`API request failed! with status: ${response.status}`);
+  }
+  return true;
 };
 
 export const validateSession = async (): Promise<boolean> => {
@@ -258,4 +240,4 @@ export const validateSession = async (): Promise<boolean> => {
   });
   const responseJSON = await response.json();
   return responseJSON.success;
-  };
+};

@@ -22,9 +22,9 @@ function App() {
   if (page.route === "notfound") {
     return <NotFoundPage />;
   }
-  
+
   if (user && !user.username) {
-    if (page.route ==="home") {
+    if (page.route === "home") {
       return (
         <div className="flex min-h-dvh">
           <div className="w-full max-w-md mx-auto md:max-w-lg">
@@ -32,17 +32,17 @@ function App() {
           </div>
           <Toaster />
         </div>
-      )
+      );
     }
-      return (
-        <div className="flex min-h-dvh">
-          <div className="w-full max-w-md mx-auto md:max-w-lg">
-            {page.route === "login" && <Login />}
-            {page.route === "register"&& <Register />}
-          </div>
-          <Toaster />
+    return (
+      <div className="flex min-h-dvh">
+        <div className="w-full max-w-md mx-auto md:max-w-lg">
+          {page.route === "login" && <Login />}
+          {page.route === "register" && <Register />}
         </div>
-      )
+        <Toaster />
+      </div>
+    );
   }
 
   if (user && user.username) {
